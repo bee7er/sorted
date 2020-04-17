@@ -47,7 +47,7 @@ class AccountValidatorController extends Controller
             if (null === $weights || 0 >= count($weights)) {
                 return [
                     'valid' => true,
-                    'message' => "Sort code not found in the EISCD table and cannot be checked",
+                    'message' => "Sort code not found in the EISCD table and, therefore, cannot be checked",
                     'original-sortcode' => $sortCode,
                     'calculation-sortcode' => $sortCode,
                     'eiscd-sortcode' => false

@@ -21,14 +21,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AccountValidatorController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AccountValidatorController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/AccountValidatorController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38636363">
-              <caret line="46" column="59" selection-start-line="46" selection-start-column="59" selection-end-line="46" selection-end-column="59" />
+            <state vertical-scroll-proportion="-12.5">
+              <caret line="49" column="89" selection-start-line="49" selection-start-column="89" selection-end-line="49" selection-end-column="89" />
               <folding>
                 <element signature="e#44#58#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.50438595">
+              <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -86,7 +96,6 @@
         <option value="$PROJECT_DIR$/phpunit.xml" />
         <option value="$PROJECT_DIR$/vendor/symfony/var-dumper/Resources/functions/dump.php" />
         <option value="$PROJECT_DIR$/bereadme.txt" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/AccountValidators/AccountValidatorException3.php" />
         <option value="$PROJECT_DIR$/app/AccountValidators/AccountValidatorException2and9.php" />
         <option value="$PROJECT_DIR$/app/Weight.php" />
@@ -100,6 +109,7 @@
         <option value="$PROJECT_DIR$/tests/Feature/AccountValidatorTest.php" />
         <option value="$PROJECT_DIR$/app/AccountValidators/AccountValidator.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/API/AccountValidatorController.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -759,14 +769,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31615925">
-          <caret line="18" column="12" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/AccountValidators/AccountValidatorException3.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.375">
@@ -851,11 +853,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/AccountValidatorController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38636363">
-          <caret line="46" column="59" selection-start-line="46" selection-start-column="59" selection-end-line="46" selection-end-column="59" />
+        <state vertical-scroll-proportion="-12.5">
+          <caret line="49" column="89" selection-start-line="49" selection-start-column="89" selection-end-line="49" selection-end-column="89" />
           <folding>
             <element signature="e#44#58#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.50438595">
+          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+          <folding />
         </state>
       </provider>
     </entry>
