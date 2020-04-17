@@ -8,6 +8,7 @@ use App\AccountValidators\AccountValidator;
 use App\AccountValidators\AccountValidatorException1;
 use App\AccountValidators\AccountValidatorException2;
 use App\AccountValidators\AccountValidatorException3;
+use App\AccountValidators\AccountValidatorException4;
 use App\AccountValidators\AccountValidatorException9;
 use App\AccountValidators\AccountValidatorException12;
 
@@ -50,6 +51,10 @@ class AccountValidatorFactory
 
             case (3):
                 return new AccountValidatorException3($weight, $weights, $originalSortCode, $sortCode,
+                    $accountNumber);
+
+            case (4):
+                return new AccountValidatorException4($weight, $weights, $originalSortCode, $sortCode,
                     $accountNumber);
 
             case (9):

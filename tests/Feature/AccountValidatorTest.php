@@ -80,6 +80,24 @@ class AccountValidatorTest extends TestCase
 //        $this->assertEquals($content['message'], "Sort code is valid");
 //    }
 
+    /**
+     * 11. Exception 4 where the remainder is equal to the checkdigit
+     * @return void
+     */
+    public function testExample11()
+    {
+        // A valid sort code / account number combination
+        $response = $this->get('/api/is-valid/134020/63849203');
+
+        $response->assertStatus(200);
+
+        $content = json_decode($response->content(), true);
+
+        $this->assertTrue($content['valid']);
+        $this->assertTrue($content['eiscd-sortcode']);
+        $this->assertEquals($content['message'], "Sort code is valid");
+    }
+
 //    /**
 //     * 12. Exception 1 – ensures that 27 has been added to the accumulated total and passes double alternate modulus check
 //     * @return void
@@ -98,25 +116,25 @@ class AccountValidatorTest extends TestCase
 //        $this->assertEquals($content['message'], "Sort code is valid");
 //    }
 
-    /**
-     * 19. Exception 2 & 9 where the first check passes
-     * @return void
-     */
-    public function testExample19()
-    {
-        // A valid sort code / account number combination
-        $response = $this->get('/api/is-valid/309070/02355688');
-
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertTrue($content['valid']);
-        $this->assertTrue($content['eiscd-sortcode']);
-        // The combination should pass and there should only be one test
-        $this->assertEquals($content['numberOfTests'], 1);
-        $this->assertEquals($content['message'], "Sort code is valid");
-    }
+//    /**
+//     * 19. Exception 2 & 9 where the first check passes
+//     * @return void
+//     */
+//    public function testExample19()
+//    {
+//        // A valid sort code / account number combination
+//        $response = $this->get('/api/is-valid/309070/02355688');
+//
+//        $response->assertStatus(200);
+//
+//        $content = json_decode($response->content(), true);
+//
+//        $this->assertTrue($content['valid']);
+//        $this->assertTrue($content['eiscd-sortcode']);
+//        // The combination should pass and there should only be one test
+//        $this->assertEquals($content['numberOfTests'], 1);
+//        $this->assertEquals($content['message'], "Sort code is valid");
+//    }
 
     /**
      * 20. Exception 2 & 9 where the first check fails and second check passes with substitution
@@ -232,24 +250,24 @@ class AccountValidatorTest extends TestCase
 //        $this->assertTrue($content['eiscd-sortcode']);
 //        $this->assertEquals($content['message'], "Sort code is valid");
 //    }
-
-    /**
-     * 33. Exception 12/13 where fails the modulus 11 check, but passes the modulus 10 check
-     * @return void
-     */
-    public function testExample33()
-    {
-        // A valid sort code / account number combination
-        $response = $this->get('/api/is-valid/074456/11104102');
-
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertTrue($content['valid']);
-        $this->assertTrue($content['eiscd-sortcode']);
-        // The combination should pass and there should have been two tests
-        $this->assertEquals($content['numberOfTests'], 2);
-        $this->assertEquals($content['message'], "Sort code is valid");
-    }
+//
+//    /**
+//     * 33. Exception 12/13 where fails the modulus 11 check, but passes the modulus 10 check
+//     * @return void
+//     */
+//    public function testExample33()
+//    {
+//        // A valid sort code / account number combination
+//        $response = $this->get('/api/is-valid/074456/11104102');
+//
+//        $response->assertStatus(200);
+//
+//        $content = json_decode($response->content(), true);
+//
+//        $this->assertTrue($content['valid']);
+//        $this->assertTrue($content['eiscd-sortcode']);
+//        // The combination should pass and there should have been two tests
+//        $this->assertEquals($content['numberOfTests'], 2);
+//        $this->assertEquals($content['message'], "Sort code is valid");
+//    }
 }
