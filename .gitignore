@@ -21,5 +21,6 @@ storage/logs
 Homestead.yaml
 Homestead.json
 /.vagrant
-/.idea/
+.idea/
+
 .phpunit.result.cache

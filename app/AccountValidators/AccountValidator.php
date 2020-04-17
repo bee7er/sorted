@@ -27,18 +27,17 @@ class AccountValidator extends Model
      *
      * @param Weight $weight
      * @param array $weights
-     * @param $originalSortCode
      * @param $sortCode
      * @param $accountNumber
      */
     public function __construct(
-        Weight $weight, array $weights, $originalSortCode, $sortCode, $accountNumber
+        Weight $weight, array $weights, $sortCode, $accountNumber
     ) {
         parent::__construct();
 
         $this->weight = $weight;
         $this->weights = $weights;
-        $this->originalSortCode = $originalSortCode;
+        $this->originalSortCode = $sortCode;
         $this->sortCode = $sortCode;
         $this->accountNumber = $accountNumber;
     }
@@ -164,11 +163,24 @@ class AccountValidator extends Model
      */
     public function doDblAlModulusCheck()
     {
+        // Get the DBLAL total based on the sort code and account number
+        $total = $this->getDblAlTotal();
+
+        // Now we do a modulus check on the total; always modulo 10 for the DBLAL check
+        return $this->doModulusCheckOnTotal($total, 10);
+    }
+
+    /**
+     * Calculate the total for the double alternate test
+     * @return int
+     */
+    protected function getDblAlTotal()
+    {
         // Create one long string of the sort code and account number
         $calcString = $this->sortCode . $this->accountNumber;
 
-        $pos = 0;
-        $total = 0;
+        $pos = $total = 0;
+        $data = [];
         // Iterate the weight fields and multiply each one by the corresponding portion of the
         // sort code / account number string
         foreach (Weight::FIELDS as $field) {
@@ -176,7 +188,9 @@ class AccountValidator extends Model
             $num = (int)substr($calcString, $pos, 1);
             // Convert the resulting number to a string array
             $interimResultAry = str_split($num * (int)$this->weight->$field);
+
             foreach ($interimResultAry as $interimResultDigit) {
+                $data[] = $interimResultDigit;
                 // Add up the individual digits
                 $total += (int)$interimResultDigit;
             }
@@ -184,8 +198,7 @@ class AccountValidator extends Model
             ++$pos;
         }
 
-        // Now we do a modulus check on the total; always modulo 10 for the DBLAL check
-        return $this->doModulusCheckOnTotal($total, 10);
+        return $total;
     }
 
     /**
@@ -195,6 +208,20 @@ class AccountValidator extends Model
      * @return bool
      */
     public function doModulusCheck($modulo)
+    {
+        // Get the normal modulus check total based on the sort code and account number
+        $total = $this->getNormalTotal();
+
+        // Now we do a modulus check on the total
+        return $this->doModulusCheckOnTotal($total, $modulo);
+    }
+
+    /**
+     * Calculate the total for the double alternate test
+     *
+     * @return int
+     */
+    protected function getNormalTotal()
     {
         // Create one long string of the sort code and account number
         $calcString = $this->sortCode . $this->accountNumber;
@@ -210,8 +237,7 @@ class AccountValidator extends Model
             ++$pos;
         }
 
-        // Now we do a modulus check on the total
-        return $this->doModulusCheckOnTotal($total, $modulo);
+        return $total;
     }
 
     /**

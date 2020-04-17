@@ -78,25 +78,25 @@ class AccountValidatorTest extends TestCase
 //        // The combination should pass and there should only be one test
 //        $this->assertEquals($content['numberOfTests'], 1);
 //        $this->assertEquals($content['message'], "Sort code is valid");
+////    }
+//
+//    /**
+//     * 11. Exception 4 where the remainder is equal to the checkdigit
+//     * @return void
+//     */
+//    public function testExample11()
+//    {
+//        // A valid sort code / account number combination
+//        $response = $this->get('/api/is-valid/134020/63849203');
+//
+//        $response->assertStatus(200);
+//
+//        $content = json_decode($response->content(), true);
+//
+//        $this->assertTrue($content['valid']);
+//        $this->assertTrue($content['eiscd-sortcode']);
+//        $this->assertEquals($content['message'], "Sort code is valid");
 //    }
-
-    /**
-     * 11. Exception 4 where the remainder is equal to the checkdigit
-     * @return void
-     */
-    public function testExample11()
-    {
-        // A valid sort code / account number combination
-        $response = $this->get('/api/is-valid/134020/63849203');
-
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertTrue($content['valid']);
-        $this->assertTrue($content['eiscd-sortcode']);
-        $this->assertEquals($content['message'], "Sort code is valid");
-    }
 
 //    /**
 //     * 12. Exception 1 – ensures that 27 has been added to the accumulated total and passes double alternate modulus check
@@ -115,6 +115,60 @@ class AccountValidatorTest extends TestCase
 //        $this->assertTrue($content['eiscd-sortcode']);
 //        $this->assertEquals($content['message'], "Sort code is valid");
 //    }
+
+//    /**
+//     * 14. Exception 5 where the check passes
+//     * @return void
+//     */
+//    public function testExample14()
+//    {
+//        // A valid sort code / account number combination
+//        $response = $this->get('/api/is-valid/938611/07806039');
+//
+//        $response->assertStatus(200);
+//
+//        $content = json_decode($response->content(), true);
+//
+//        $this->assertTrue($content['valid']);
+//        $this->assertTrue($content['eiscd-sortcode']);
+//        $this->assertEquals($content['message'], "Sort code is valid");
+//    }
+
+//    /**
+//     * 15. Exception 5 where the check passes with substitution
+//     * @return void
+//     */
+//    public function testExample15()
+//    {
+//        // A valid sort code / account number combination
+//        $response = $this->get('/api/is-valid/938600/42368003');
+//
+//        $response->assertStatus(200);
+//
+//        $content = json_decode($response->content(), true);
+//
+//        $this->assertTrue($content['valid']);
+//        $this->assertTrue($content['eiscd-sortcode']);
+//        $this->assertEquals($content['message'], "Sort code is valid");
+//    }
+
+    /**
+     * 16. Exception 5 where both checks produce a remainder of 0 and pass
+     * @return void
+     */
+    public function testExample16()
+    {
+        // A valid sort code / account number combination
+        $response = $this->get('/api/is-valid/938063/55065200');
+
+        $response->assertStatus(200);
+
+        $content = json_decode($response->content(), true);
+
+        $this->assertTrue($content['valid']);
+        $this->assertTrue($content['eiscd-sortcode']);
+        $this->assertEquals($content['message'], "Sort code is valid");
+    }
 
 //    /**
 //     * 19. Exception 2 & 9 where the first check passes

@@ -9,6 +9,7 @@ use App\AccountValidators\AccountValidatorException1;
 use App\AccountValidators\AccountValidatorException2;
 use App\AccountValidators\AccountValidatorException3;
 use App\AccountValidators\AccountValidatorException4;
+use App\AccountValidators\AccountValidatorException5;
 use App\AccountValidators\AccountValidatorException9;
 use App\AccountValidators\AccountValidatorException12;
 
@@ -24,13 +25,11 @@ class AccountValidatorFactory
      *
      * @param  Weight  $weight
      * @param  array   $weights
-     * @param  string  $originalSortCode
      * @param  string  $sortCode
      * @param  string  $accountNumber
      * @return \App\AccountValidators\AccountValidator
      */
-    public static function getInstance(Weight $weight, $weights, $originalSortCode, $sortCode,
-                                       $accountNumber)
+    public static function getInstance(Weight $weight, $weights, $sortCode, $accountNumber)
     {
         $cnt = count($weights);
         if (2 < $cnt) {
@@ -38,36 +37,32 @@ class AccountValidatorFactory
         }
 
         $exception = (int)$weight->exception;
-        $exception2 = isset($weights[1]) ? (int)$weights[1]->exception: null;
 
         switch ($exception) {
             case (1):
-                return new AccountValidatorException1($weight, $weights, $originalSortCode, $sortCode,
-                    $accountNumber);
+                return new AccountValidatorException1($weight, $weights, $sortCode, $accountNumber);
 
             case (2):
-                return new AccountValidatorException2($weight, $weights, $originalSortCode, $sortCode,
-                    $accountNumber);
+                return new AccountValidatorException2($weight, $weights, $sortCode, $accountNumber);
 
             case (3):
-                return new AccountValidatorException3($weight, $weights, $originalSortCode, $sortCode,
-                    $accountNumber);
+                return new AccountValidatorException3($weight, $weights, $sortCode, $accountNumber);
 
             case (4):
-                return new AccountValidatorException4($weight, $weights, $originalSortCode, $sortCode,
-                    $accountNumber);
+                return new AccountValidatorException4($weight, $weights, $sortCode, $accountNumber);
+
+            case (5):
+                return new AccountValidatorException5($weight, $weights, $sortCode, $accountNumber);
 
             case (9):
-                return new AccountValidatorException9($weight, $weights, $originalSortCode, $sortCode,
-                    $accountNumber);
+                return new AccountValidatorException9($weight, $weights, $sortCode, $accountNumber);
 
             case (12):
-                return new AccountValidatorException12($weight, $weights, $originalSortCode, $sortCode,
-                    $accountNumber);
+                return new AccountValidatorException12($weight, $weights, $sortCode, $accountNumber);
 
             default:
                 // Not an exceptional sort code; just use the base class
-                return new AccountValidator($weight, $weights, $originalSortCode, $sortCode, $accountNumber);
+                return new AccountValidator($weight, $weights, $sortCode, $accountNumber);
         }
     }
 }

@@ -21,17 +21,6 @@ class AccountValidatorController extends Controller
     public function isValid($sortCode, $accountNumber)
     {
         try {
-            // Does the sort code appear in the substitution table
-            $substituteSortCode = Substitute::query()
-                ->whereNull('inactivated_at')
-                ->where('original_sort_code', '=', $sortCode)
-                ->get();
-
-            $originalSortCode = $sortCode;
-            if (!$substituteSortCode->isEmpty()) {
-                $sortCode = $substituteSortCode->first()->substitute_sort_code;
-            }
-
             //todo Create a service to manage the validators
             //todo Validate the length of the sort code
             //todo Validate the length of the account number
@@ -62,7 +51,6 @@ class AccountValidatorController extends Controller
                 $validator = (new AccountValidatorFactory())->getInstance(
                     $weight,
                     $weights,
-                    $originalSortCode,
                     $sortCode,
                     $accountNumber
                 );
@@ -72,6 +60,11 @@ class AccountValidatorController extends Controller
                 if ($result['valid'] && !$validator->passAllTests()) {
                     // This test has passed and we don't need to perform the second test, if there
                     // is one, so exit with passed result
+                    break;
+                }
+
+                if (!$result['valid'] && $validator->passAllTests()) {
+                    // This test failed and we have to pass all tests, exit with failed test
                     break;
                 }
             }
