@@ -3,39 +3,21 @@
 namespace App\AccountValidators;
 
 use App\Weight;
-use RuntimeException;
 
-class AccountValidatorException2and9 extends AccountValidator
+class AccountValidatorException2 extends AccountValidator
 {
     // 0 0 1 2 5 3 6 4 8 7 10 9 3 1
     static $overrideWeights1 = ['0', '0', '1', '2', '5', '3', '6', '4', '8', '7', '10', '9', '3', '1'];
     // 0 0 0 0 0 0 0 0 8 7 10 9 3 1
     static $overrideWeights2 = ['0', '0', '0', '0', '0', '0', '0', '0', '8', '7', '10', '9', '3', '1'];
-    // The exception when we override the sort code
-    static $overrideSortCodeException = 9;
-    // Lloyds euro accounts sort code
-    static $overrideSortCode = '309634';
 
     /**
      * If multiple tests are being performed do we have to pass all of them
      */
     public function passAllTests()
     {
-        // Failed on first we can go ahead and try with the second
+        // We do not need to pass all tests, if there are multiple
         return false;
-    }
-
-    /**
-     * Under certain conditions we override the incoming sort code
-     *
-     * @param Weight $weight
-     */
-    public function checkForOverrideSortCode()
-    {
-        if (self::$overrideSortCodeException === $this->weight->exception) {
-            // Try with the Lloyds euro accounts sort code
-            $this->sortCode = self::$overrideSortCode;
-        }
     }
 
     /**

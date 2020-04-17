@@ -55,13 +55,11 @@ class AccountValidatorController extends Controller
             }
 
             $result = [];
-            $testCounter = 1;
             // Does the account number pass the modulus checks
             foreach ($weights as $weight) {
 
                 // Instantiate a validator object to continue processing the sort code and account number combination
                 $validator = (new AccountValidatorFactory())->getInstance(
-                    $testCounter,
                     $weight,
                     $weights,
                     $originalSortCode,
@@ -71,15 +69,11 @@ class AccountValidatorController extends Controller
 
                 $result = $validator->isValid();
 
-                if (!$result && $validator->passAllTests()) {
-                    // This test has failed and we must pass all of them, so exit with failed result
-                    break;
-                } elseif ($result && !$validator->passAllTests()) {
-                    // This test has passed and we only need either test, so exit with passed result
+                if ($result['valid'] && !$validator->passAllTests()) {
+                    // This test has passed and we don't need to perform the second test, if there
+                    // is one, so exit with passed result
                     break;
                 }
-
-                ++$testCounter;
             }
 
             return $result;

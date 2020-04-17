@@ -19,24 +19,23 @@ class AccountValidator extends Model
     protected $originalSortCode;
     protected $sortCode;
     protected $accountNumber;
+    protected $testWasRun;
     protected $testCounter;
 
     /**
      * AccountValidator constructor
      *
-     * @param int $testCounter
      * @param Weight $weight
      * @param array $weights
      * @param $originalSortCode
      * @param $sortCode
      * @param $accountNumber
      */
-    public function __construct($testCounter, Weight $weight, array $weights, $originalSortCode, $sortCode,
-                                $accountNumber)
-    {
+    public function __construct(
+        Weight $weight, array $weights, $originalSortCode, $sortCode, $accountNumber
+    ) {
         parent::__construct();
 
-        $this->testCounter = $testCounter;
         $this->weight = $weight;
         $this->weights = $weights;
         $this->originalSortCode = $originalSortCode;
@@ -52,14 +51,17 @@ class AccountValidator extends Model
     public function isValid()
     {
         $result = $this->processWeight();
+        $numberOfTests = count(array_filter($this->weights, function ($weight) { return $weight->testWasRun; }));
+
         if (!$result) {
             return [
                 'valid' => $result,
                 'message' => "The account number failed the modulus check",
                 'original-sortcode' => $this->originalSortCode,
                 'calculation-sortcode' => $this->sortCode,
-                'testCounter' => $this->testCounter,
-                'eiscd-sortcode' => true
+                'numberOfTests' => $numberOfTests,
+                'eiscd-sortcode' => true,
+                'class' => $this->getClassName()
             ];
         }
 
@@ -69,9 +71,20 @@ class AccountValidator extends Model
             'message' => "Sort code is valid",
             'original-sortcode' => $this->originalSortCode,
             'calculation-sortcode' => $this->sortCode,
-            'testCounter' => $this->testCounter,
-            'eiscd-sortcode' => true
+            'numberOfTests' => $numberOfTests,
+            'eiscd-sortcode' => true,
+            'class' => $this->getClassName()
         ];
+    }
+
+    /**
+     * Process the class name
+     *
+     * @return bool
+     */
+    public function getClassName()
+    {
+        return get_class($this);
     }
 
     /**
@@ -83,15 +96,11 @@ class AccountValidator extends Model
     {
         $this->weight->passesTest = true;
         // Does the account number pass the modulus checks
-        if (1 === $this->testCounter) {
-            // Always run the first test
-        } elseif (2 === $this->testCounter) {
-            if (!$this->runSecondTest()) {
-                return true;
-            }
-        } else {
-            throw new RuntimeException(sprintf("Unexpected number of tests"));
+        if (!$this->runTest()) {
+            return $this->weight->passesTest;
         }
+
+        $this->weight->testWasRun = true;
 
         $this->checkForOverrideWeights();
 
@@ -115,14 +124,15 @@ class AccountValidator extends Model
     }
 
     /**
-     * If multiple tests are being performed do we have to run the second one; normally we do
+     * Sometimes we do not run a particular test; but mostly we do
      *
      * @return bool
      */
-    public function runSecondTest()
+    public function runTest()
     {
         return true;
     }
+
 
     /**
      * If multiple tests are being performed do we have to pass all of them; normally we do
@@ -133,30 +143,19 @@ class AccountValidator extends Model
     }
 
     /**
-     * Under certain conditions we override the incoming sort code
-     */
-    public function checkForOverrideSortCode()
-    {
-        // We don't normally do any overriding of the sort code
-        return;
-    }
-
-    /**
      * Under certain conditions we override the weights used
      */
     public function checkForOverrideWeights()
     {
         // We don't normally do any overriding of the weight details
-        return;
     }
 
     /**
-     * Exit on first check
+     * Under certain conditions we override the incoming sort code
      */
-    public function exitIfFirstCheckSuccessful()
+    public function checkForOverrideSortCode()
     {
-        // We normally must perform all tests
-        return false;
+        // We don't normally do any overriding of the sort code
     }
 
     /**
@@ -195,7 +194,7 @@ class AccountValidator extends Model
      * @param int $modulo
      * @return bool
      */
-    public function doModulusCheck($modulo, $debug = false)
+    public function doModulusCheck($modulo)
     {
         // Create one long string of the sort code and account number
         $calcString = $this->sortCode . $this->accountNumber;
@@ -211,10 +210,6 @@ class AccountValidator extends Model
             ++$pos;
         }
 
-        if ($debug) {
-            de($calcString, $this->weight, $total);
-            dd($calcString . ' = ' . $total);
-        }
         // Now we do a modulus check on the total
         return $this->doModulusCheckOnTotal($total, $modulo);
     }

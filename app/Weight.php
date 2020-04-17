@@ -10,6 +10,7 @@ class Weight extends Model
     const FIELDS = ['u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
     const SORT_CODE_FIELDS = ['u', 'v', 'w', 'x', 'y', 'z'];
 
+    public $testWasRun = false;
     public $passesTest = false;
 
     /**
