@@ -2,21 +2,22 @@
 
 namespace Tests\Feature;
 
+use App\AccountValidators\AccountValidator;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class AccountValidatorTest extends TestCase
 {
     /**
-     * 0. Check random accounts
+     * 0. Check some random accounts
      * @return void
      */
     public function testExample0()
     {
         $response = $this->get('/api/is-valid/070116/14139285');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
         $response = $this->get('/api/is-valid/800557/00325541');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -27,7 +28,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/089999/66374958');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -38,7 +39,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/107999/88837491');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -49,7 +50,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/202959/63748472');
-        $this->checkResult($response, 200, true, true, 2, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 2, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -60,7 +61,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/871427/46238510');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -71,7 +72,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/872427/46238510');
-        $this->checkResult($response, 200, true, true, 2, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 2, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -82,7 +83,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/871427/09123496');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -93,7 +94,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/871427/99123496');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -104,7 +105,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/820000/73688637');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -115,7 +116,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/827999/73988638');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -126,7 +127,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/827101/28748352');
-        $this->checkResult($response, 200, true, true, 2, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 2, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -137,7 +138,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/134020/63849203');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -148,7 +149,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/118765/64371389');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -159,7 +160,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/200915/41011166');
-        $this->checkResult($response, 200, true, true, 0, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 0, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -170,7 +171,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/938611/07806039');
-        $this->checkResult($response, 200, true, true, 2, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 2, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -181,7 +182,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/938600/42368003');
-        $this->checkResult($response, 200, true, true, 2, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 2, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -192,7 +193,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/938063/55065200');
-        $this->checkResult($response, 200, true, true, 2, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 2, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -203,7 +204,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/772798/99345694');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -214,7 +215,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/086090/06774744');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -225,7 +226,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/309070/02355688');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -239,7 +240,7 @@ class AccountValidatorTest extends TestCase
 
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/309070/12345668');
-        $this->checkResult($response, 200, true, true, 2, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 2, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -250,7 +251,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/309070/12345677');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -261,7 +262,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/309070/99345694');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -272,7 +273,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/938063/15764273');
-        $this->checkResult($response, 200, false, true, 2, 'The account number failed the modulus check');
+        $this->checkResult($response, 200, false, true, 2, AccountValidator::FAIL_MESSAGE);
     }
 
     /**
@@ -283,7 +284,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/938063/15764264');
-        $this->checkResult($response, 200, false, true, 1, 'The account number failed the modulus check');
+        $this->checkResult($response, 200, false, true, 1, AccountValidator::FAIL_MESSAGE);
     }
 
     /**
@@ -294,7 +295,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/938063/15763217');
-        $this->checkResult($response, 200, false, true, 1, 'The account number failed the modulus check');
+        $this->checkResult($response, 200, false, true, 1, AccountValidator::FAIL_MESSAGE);
     }
 
     /**
@@ -305,7 +306,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/118765/64371388');
-        $this->checkResult($response, 200, false, true, 1, 'The account number failed the modulus check');
+        $this->checkResult($response, 200, false, true, 1, AccountValidator::FAIL_MESSAGE);
     }
 
     /**
@@ -316,7 +317,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/203099/66831036');
-        $this->checkResult($response, 200, false, true, 2, 'The account number failed the modulus check');
+        $this->checkResult($response, 200, false, true, 2, AccountValidator::FAIL_MESSAGE);
     }
 
     /**
@@ -327,7 +328,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/203099/58716970');
-        $this->checkResult($response, 200, false, true, 1, 'The account number failed the modulus check');
+        $this->checkResult($response, 200, false, true, 1, AccountValidator::FAIL_MESSAGE);
     }
 
     /**
@@ -338,7 +339,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/089999/66374959');
-        $this->checkResult($response, 200, false, true, 1, 'The account number failed the modulus check');
+        $this->checkResult($response, 200, false, true, 1, AccountValidator::FAIL_MESSAGE);
     }
 
     /**
@@ -349,7 +350,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/107999/88837493');
-        $this->checkResult($response, 200, false, true, 1, 'The account number failed the modulus check');
+        $this->checkResult($response, 200, false, true, 1, AccountValidator::FAIL_MESSAGE);
     }
 
     /**
@@ -361,7 +362,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/074456/12345112');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -373,7 +374,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/070116/34012583');
-        $this->checkResult($response, 200, true, true, 1, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -384,7 +385,7 @@ class AccountValidatorTest extends TestCase
     {
         // A valid sort code / account number combination
         $response = $this->get('/api/is-valid/074456/11104102');
-        $this->checkResult($response, 200, true, true, 2, 'Sort code is valid');
+        $this->checkResult($response, 200, true, true, 2, AccountValidator::PASS_MESSAGE);
     }
 
     /**

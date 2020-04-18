@@ -14,6 +14,9 @@ class AccountValidator extends Model
     const MOD_CHECK_MOD10 = 'MOD10';
     const MOD_CHECK_MOD11 = 'MOD11';
 
+    const FAIL_MESSAGE = "The account number failed the modulus check";
+    const PASS_MESSAGE = "Sort code is valid";
+
     protected $weight;
     protected $weights = [];
     protected $originalSortCode;
@@ -55,7 +58,7 @@ class AccountValidator extends Model
         if (!$result) {
             return [
                 'valid' => $result,
-                'message' => "The account number failed the modulus check",
+                'message' => self::FAIL_MESSAGE,
                 'original-sortcode' => $this->originalSortCode,
                 'calculation-sortcode' => $this->sortCode,
                 'numberOfTests' => $numberOfTests,
@@ -67,7 +70,7 @@ class AccountValidator extends Model
         // Success
         return [
             'valid' => $result,
-            'message' => "Sort code is valid",
+            'message' => self::PASS_MESSAGE,
             'original-sortcode' => $this->originalSortCode,
             'calculation-sortcode' => $this->sortCode,
             'numberOfTests' => $numberOfTests,
