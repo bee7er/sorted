@@ -31,6 +31,7 @@ class AccountValidatorController extends Controller
                 ->whereNull('inactivated_at')
                 ->where('start', '<=', $sortCode)
                 ->where('end', '>=', $sortCode)
+                ->orderBy('id')
                 ->get()->all();
 
             if (null === $weights || 0 >= count($weights)) {

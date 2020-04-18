@@ -14,6 +14,7 @@ use App\AccountValidators\AccountValidatorException6;
 use App\AccountValidators\AccountValidatorException7;
 use App\AccountValidators\AccountValidatorException8;
 use App\AccountValidators\AccountValidatorException9;
+use App\AccountValidators\AccountValidatorException10;
 use App\AccountValidators\AccountValidatorException12;
 
 /**
@@ -69,8 +70,14 @@ class AccountValidatorFactory
             case (9):
                 return new AccountValidatorException9($weight, $weights, $sortCode, $accountNumber);
 
+            case (10):
+                return new AccountValidatorException10($weight, $weights, $sortCode, $accountNumber);
+
             case (12):
                 return new AccountValidatorException12($weight, $weights, $sortCode, $accountNumber);
+
+            case (11):
+                // Use the base class
 
             default:
                 // Not an exceptional sort code; just use the base class
