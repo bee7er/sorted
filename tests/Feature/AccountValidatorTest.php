@@ -116,24 +116,24 @@ class AccountValidatorTest extends TestCase
 //        $this->assertEquals($content['message'], "Sort code is valid");
 //    }
 
-    /**
-     * 13. Exception 6 where the account fails standard check but is a foreign currency account
-     * @return void
-     */
-    public function testExample13()
-    {
-        // A valid sort code / account number combination
-        $response = $this->get('/api/is-valid/200915/41011166');
-
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertTrue($content['valid']);
-        $this->assertTrue($content['eiscd-sortcode']);
-        $this->assertEquals($content['numberOfTests'], 0);
-        $this->assertEquals($content['message'], "Sort code is valid");
-    }
+//    /**
+//     * 13. Exception 6 where the account fails standard check but is a foreign currency account
+//     * @return void
+//     */
+//    public function testExample13()
+//    {
+//        // A valid sort code / account number combination
+//        $response = $this->get('/api/is-valid/200915/41011166');
+//
+//        $response->assertStatus(200);
+//
+//        $content = json_decode($response->content(), true);
+//
+//        $this->assertTrue($content['valid']);
+//        $this->assertTrue($content['eiscd-sortcode']);
+//        $this->assertEquals($content['numberOfTests'], 0);
+//        $this->assertEquals($content['message'], "Sort code is valid");
+//    }
 
 //    /**
 //     * 14. Exception 5 where the check passes
@@ -190,6 +190,42 @@ class AccountValidatorTest extends TestCase
 //    }
 
 //    /**
+//     * 17. Exception 7 where passes but would fail the standard check
+//     * @return void
+//     */
+//    public function testExample17()
+//    {
+//        // A valid sort code / account number combination
+//        $response = $this->get('/api/is-valid/772798/99345694');
+//
+//        $response->assertStatus(200);
+//
+//        $content = json_decode($response->content(), true);
+//
+//        $this->assertTrue($content['valid']);
+//        $this->assertTrue($content['eiscd-sortcode']);
+//        $this->assertEquals($content['message'], "Sort code is valid");
+//    }
+
+    /**
+     * 18. Exception 8 where the check passes
+     * @return void
+     */
+    public function testExample18()
+    {
+        // A valid sort code / account number combination
+        $response = $this->get('/api/is-valid/086090/06774744');
+
+        $response->assertStatus(200);
+
+        $content = json_decode($response->content(), true);
+
+        $this->assertTrue($content['valid']);
+        $this->assertTrue($content['eiscd-sortcode']);
+        $this->assertEquals($content['message'], "Sort code is valid");
+    }
+
+//    /**
 //     * 19. Exception 2 & 9 where the first check passes
 //     * @return void
 //     */
@@ -209,11 +245,11 @@ class AccountValidatorTest extends TestCase
 //        $this->assertEquals($content['message'], "Sort code is valid");
 //    }
 
-    /**
-     * 20. Exception 2 & 9 where the first check fails and second check passes with substitution
-     *
-     * @return void
-     */
+//    /**
+//     * 20. Exception 2 & 9 where the first check fails and second check passes with substitution
+//     *
+//     * @return void
+//     */
 //    public function testExample20()
 //    {
 //        //NB This test fails and it should not

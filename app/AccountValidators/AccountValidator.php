@@ -94,7 +94,7 @@ class AccountValidator extends Model
     public function processWeight()
     {
         $this->weight->passesTest = true;
-        // Does the account number pass the modulus checks
+        // Under some circumstances we do not actually run the test
         if (!$this->runTest()) {
             return $this->weight->passesTest;
         }

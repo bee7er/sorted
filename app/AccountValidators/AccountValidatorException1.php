@@ -2,8 +2,6 @@
 
 namespace App\AccountValidators;
 
-use App\Weight;
-
 class AccountValidatorException1 extends AccountValidator
 {
     // The adjustment performed prior to doing the modulus check

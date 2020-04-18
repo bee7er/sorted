@@ -10,9 +10,9 @@ class AccountValidatorException6 extends AccountValidator
      */
     public function runTest()
     {
-        $a = substr($this->accountNumber, 0, 1);
-        $g = substr($this->accountNumber, 6, 1);
-        $h = substr($this->accountNumber, 7, 1);
+        $a = (int)substr($this->accountNumber, 0, 1);
+        $g = (int)substr($this->accountNumber, 6, 1);
+        $h = (int)substr($this->accountNumber, 7, 1);
 
         if (in_array($a, [4,5,6,7,8]) && $g === $h) {
             // Foreign currency account, we cannot do the check

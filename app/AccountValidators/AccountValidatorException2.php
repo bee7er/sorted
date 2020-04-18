@@ -27,12 +27,12 @@ class AccountValidatorException2 extends AccountValidator
     {
         // Check the account number for possible weight substitution
         $substituteWeights = null;
-        $a = substr($this->accountNumber, 0, 1);
-        $g = substr($this->accountNumber, 6, 1);
+        $a = (int)substr($this->accountNumber, 0, 1);
+        $g = (int)substr($this->accountNumber, 6, 1);
 
-        if ($a <> 0 && $g <> 9) {
+        if (0 <> $a && 9 <> $g) {
             $substituteWeights = self::$overrideWeights1;
-        } elseif ($a <> 0 && $g = 9) {;
+        } elseif (0 <> $a && 9 === $g) {
             $substituteWeights = self::$overrideWeights2;
         }
 
