@@ -9,18 +9,6 @@ use Tests\TestCase;
 class AccountValidatorTest extends TestCase
 {
     /**
-     * 0. Check some random accounts
-     * @return void
-     */
-    public function testExample0()
-    {
-        $response = $this->get('/api/is-valid/070116/14139285');
-        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
-        $response = $this->get('/api/is-valid/800557/00325541');
-        $this->checkResult($response, 200, true, true, 1, AccountValidator::PASS_MESSAGE);
-    }
-
-    /**
      * 1. Pass modulus 10 check
      * @return void
      */
@@ -406,7 +394,7 @@ class AccountValidatorTest extends TestCase
 
         $isValid ? $this->assertTrue($content['valid']) : $this->assertFalse($content['valid']);
         $isEiscdSortCode ? $this->assertTrue($content['eiscd-sortcode']) : $this->assertFalse($content['eiscd-sortcode']);
-        $this->assertEquals($content['numberOfTests'], $expectedNumberOfTests);
-        $this->assertEquals($content['message'], $message);
+        $this->assertEquals($expectedNumberOfTests, $content['numberOfTests']);
+        $this->assertEquals($message, $content['message']);
     }
 }

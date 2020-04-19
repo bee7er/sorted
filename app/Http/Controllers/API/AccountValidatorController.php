@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\AccountValidators\AccountValidator;
 use Exception;
 
 use App\AccountValidatorFactory;
 use App\Http\Controllers\Controller;
-use App\Substitute;
 use App\Weight;
 
 class AccountValidatorController extends Controller
@@ -21,10 +21,23 @@ class AccountValidatorController extends Controller
     public function isValid($sortCode, $accountNumber)
     {
         try {
-            //todo Create a service to manage the validators
-            //todo Validate the length of the sort code
-            //todo Validate the length of the account number
-            //todo See non-standard account numbers
+            // Strip out white space from both fields
+            $sortCode = preg_replace('/\s+/', '', $sortCode);
+            $accountNumber = preg_replace('/\s+/', '', $accountNumber);
+
+            if (!$this->isValidSortCode($sortCode)) {
+                return [
+                    'valid' => false,
+                    'message' => AccountValidator::SORT_CODE_INVALID_MESSAGE,
+                    'original-sortcode' => $sortCode,
+                    'calculation-sortcode' => $sortCode,
+                    'original-account-number' => $accountNumber,
+                    'calculation-account-number' => $accountNumber,
+                    'eiscd-sortcode' => false,
+                    'numberOfTests' => 0,
+                    'class' => null
+                ];
+            }
 
             // Get the EISCD (Extended Industry Sorting Code Directory) weightings record
             $weights = Weight::query()
@@ -37,10 +50,14 @@ class AccountValidatorController extends Controller
             if (null === $weights || 0 >= count($weights)) {
                 return [
                     'valid' => true,
-                    'message' => "Sort code not found in the EISCD table and, therefore, cannot be checked",
+                    'message' => AccountValidator::SORT_CODE_NOT_FOUND_MESSAGE,
                     'original-sortcode' => $sortCode,
                     'calculation-sortcode' => $sortCode,
-                    'eiscd-sortcode' => false
+                    'original-account-number' => $accountNumber,
+                    'calculation-account-number' => $accountNumber,
+                    'eiscd-sortcode' => false,
+                    'numberOfTests' => 0,
+                    'class' => null
                 ];
             }
 
@@ -78,8 +95,28 @@ class AccountValidatorController extends Controller
                 'message' => "Error processing sort code: " . $e->getMessage(),
                 'original-sortcode' => $sortCode,
                 'calculation-sortcode' => $sortCode,
-                'eiscd-sortcode' => true
+                'original-account-number' => $accountNumber,
+                'calculation-account-number' => $accountNumber,
+                'eiscd-sortcode' => true,
+                'numberOfTests' => 0,
+                'class' => null
             ];
         }
+    }
+
+    /**
+     * Validate sort code, which must be a 6 digit number
+     *
+     * @param  string  $sortCode
+     * @return bool
+     */
+    public function isValidSortCode($sortCode)
+    {
+
+        if (6 !== strlen($sortCode) || !is_numeric($sortCode)) {
+            return false;
+        }
+
+        return true;
     }
 }
