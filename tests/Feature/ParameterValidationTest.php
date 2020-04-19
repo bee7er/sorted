@@ -15,11 +15,7 @@ class ParameterValidationTest extends TestCase
     public function testInvalidSortCode1()
     {
         $response = $this->get('/api/is-valid/07011/12224141');
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertEquals(AccountValidator::SORT_CODE_INVALID_MESSAGE, $content['message']);
+        $this->checkResult($response, 200, AccountValidator::SORT_CODE_INVALID_MESSAGE);
     }
 
     /**
@@ -29,11 +25,7 @@ class ParameterValidationTest extends TestCase
     public function testInvalidSortCode2()
     {
         $response = $this->get('/api/is-valid/0701x1/12224141');
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertEquals(AccountValidator::SORT_CODE_INVALID_MESSAGE, $content['message']);
+        $this->checkResult($response, 200, AccountValidator::SORT_CODE_INVALID_MESSAGE);
     }
 
     /**
@@ -43,11 +35,7 @@ class ParameterValidationTest extends TestCase
     public function testInvalidSortCode3()
     {
         $response = $this->get('/api/is-valid/0701122/14134141');
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertEquals(AccountValidator::SORT_CODE_INVALID_MESSAGE, $content['message']);
+        $this->checkResult($response, 200, AccountValidator::SORT_CODE_INVALID_MESSAGE);
     }
     /**
      * Validate sort code is found in the EISCD table
@@ -56,11 +44,7 @@ class ParameterValidationTest extends TestCase
     public function testInvalidSortCode4()
     {
         $response = $this->get('/api/is-valid/000999/12222141');
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertEquals(AccountValidator::SORT_CODE_NOT_FOUND_MESSAGE, $content['message']);
+        $this->checkResult($response, 200, AccountValidator::SORT_CODE_NOT_FOUND_MESSAGE);
     }
 
     /**
@@ -70,11 +54,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber1()
     {
         $response = $this->get('/api/is-valid/070116/11283');
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertEquals(AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE, $content['message']);
+        $this->checkResult($response, 200, AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE);
     }
 
     /**
@@ -84,11 +64,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber2()
     {
         $response = $this->get('/api/is-valid/070116/12345687671');
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertEquals(AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE, $content['message']);
+        $this->checkResult($response, 200, AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE);
     }
 
     /**
@@ -98,11 +74,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber3()
     {
         $response = $this->get('/api/is-valid/070116/1112355x');
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertEquals(AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE, $content['message']);
+        $this->checkResult($response, 200, AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE);
     }
 
     /**
@@ -112,11 +84,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber4()
     {
         $response = $this->get('/api/is-valid/089999/66374958');
-        $response->assertStatus(200);
-
-        $content = json_decode($response->content(), true);
-
-        $this->assertEquals(AccountValidator::PASS_MESSAGE, $content['message']);
+        $this->checkResult($response, 200, AccountValidator::PASS_MESSAGE);
     }
 
     /**
@@ -126,11 +94,10 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber5()
     {
         $response = $this->get('/api/is-valid/089999/663749');
-        $response->assertStatus(200);
+        $this->checkResult($response, 200, AccountValidator::FAIL_MESSAGE);
 
         $content = json_decode($response->content(), true);
 
-        $this->assertEquals(AccountValidator::FAIL_MESSAGE, $content['message']);
         $this->assertEquals('00663749', $content['calculation-account-number']);
     }
 
@@ -141,11 +108,10 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber6()
     {
         $response = $this->get('/api/is-valid/089999/6637497');
-        $response->assertStatus(200);
+        $this->checkResult($response, 200, AccountValidator::FAIL_MESSAGE);
 
         $content = json_decode($response->content(), true);
 
-        $this->assertEquals(AccountValidator::FAIL_MESSAGE, $content['message']);
         $this->assertEquals('06637497', $content['calculation-account-number']);
     }
 
@@ -156,11 +122,10 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber7()
     {
         $response = $this->get('/api/is-valid/089999/663897497');
-        $response->assertStatus(200);
+        $this->checkResult($response, 200, AccountValidator::FAIL_MESSAGE);
 
         $content = json_decode($response->content(), true);
 
-        $this->assertEquals(AccountValidator::FAIL_MESSAGE, $content['message']);
         $this->assertEquals('089999', $content['original-sortcode']);
         $this->assertEquals('089996', $content['calculation-sortcode']);
         $this->assertEquals('663897497', $content['original-account-number']);
@@ -174,14 +139,29 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber8()
     {
         $response = $this->get('/api/is-valid/089999/6638974970');
-        $response->assertStatus(200);
+        $this->checkResult($response, 200, AccountValidator::FAIL_MESSAGE);
 
         $content = json_decode($response->content(), true);
 
-        $this->assertEquals(AccountValidator::FAIL_MESSAGE, $content['message']);
         $this->assertEquals('089999', $content['original-sortcode']);
         $this->assertEquals('089999', $content['calculation-sortcode']);
         $this->assertEquals('6638974970', $content['original-account-number']);
         $this->assertEquals('38974970', $content['calculation-account-number']);
+    }
+
+    /**
+     * Check the result of a test
+     *
+     * @param TestResponse $response
+     * @param int $statusCode
+     * @param string $message
+     */
+    private function checkResult($response, $statusCode, $message)
+    {
+        $response->assertStatus($statusCode);
+
+        $content = json_decode($response->content(), true);
+
+        $this->assertEquals($message, $content['message']);
     }
 }
