@@ -77,6 +77,8 @@ class AccountValidatorFactory
                 return new AccountValidatorException12($weight, $weights, $sortCode, $accountNumber);
 
             case (11):
+            case (13):
+            case (14):
                 // Use the base class
 
             default:

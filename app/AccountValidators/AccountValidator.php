@@ -107,8 +107,7 @@ class AccountValidator extends Model
                 'original-account-number' => $this->accountNumber,
                 'calculation-account-number' => $this->originalAccountNumber,
                 'eiscd-sortcode' => true,
-                'numberOfTests' => 0,
-                'class' => $this->getClassName()
+                'numberOfTests' => 0
             ];
         }
 
@@ -124,8 +123,7 @@ class AccountValidator extends Model
                 'original-account-number' => $this->originalAccountNumber,
                 'calculation-account-number' => $this->accountNumber,
                 'numberOfTests' => $numberOfTests,
-                'eiscd-sortcode' => true,
-                'class' => $this->getClassName()
+                'eiscd-sortcode' => true
             ];
         }
 
@@ -138,19 +136,8 @@ class AccountValidator extends Model
             'original-account-number' => $this->originalAccountNumber,
             'calculation-account-number' => $this->accountNumber,
             'numberOfTests' => $numberOfTests,
-            'eiscd-sortcode' => true,
-            'class' => $this->getClassName()
+            'eiscd-sortcode' => true
         ];
-    }
-
-    /**
-     * Process the class name
-     *
-     * @return bool
-     */
-    public function getClassName()
-    {
-        return get_class($this);
     }
 
     /**
