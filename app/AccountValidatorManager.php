@@ -4,6 +4,10 @@ namespace App;
 
 use Exception;
 
+/**
+ * Class AccountValidatorManager
+ * @package App
+ */
 class AccountValidatorManager
 {
     // Modulus checks

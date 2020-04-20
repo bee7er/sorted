@@ -55,7 +55,7 @@ class AccountValidator extends Model
 
     /**
      * Count of tests run for a particular weight record, will normally be 1
-     * @var bool
+     * @var int
      */
     public $testsRun;
 

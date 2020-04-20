@@ -2,15 +2,29 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
 
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Class Weight
+ * @package App
+ */
 class Weight extends Model
 {
     const FIELDS = ['u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
     const SORT_CODE_FIELDS = ['u', 'v', 'w', 'x', 'y', 'z'];
 
+    /**
+     * The number of tests run for this weight record
+     * @var int
+     */
     public $testsRun = 0;
+
+    /**
+     * Does the modulus check pass
+     * @var bool
+     */
     public $passesTest = false;
 
     /**

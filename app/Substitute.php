@@ -2,9 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
 
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Class Substitute
+ * @package App
+ */
 class Substitute extends Model
 {
     /**
