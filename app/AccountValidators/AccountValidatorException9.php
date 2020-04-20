@@ -6,7 +6,7 @@ namespace App\AccountValidators;
  * Class AccountValidatorException9
  * @package App\AccountValidators
  */
-class AccountValidatorException9 extends AccountValidatorException2
+class AccountValidatorException9 extends AccountValidator
 {
     // Lloyds euro accounts sort code
     static $overrideSortCode = '309634';
