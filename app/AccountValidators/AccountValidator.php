@@ -7,23 +7,48 @@ use RuntimeException;
 
 use App\Weight;
 
+/**
+ * Class AccountValidator
+ * @package App\AccountValidators
+ */
 class AccountValidator extends Model
 {
     // Modulus checks
     const MOD_CHECK_DBLAL = 'DBLAL';
     const MOD_CHECK_MOD10 = 'MOD10';
     const MOD_CHECK_MOD11 = 'MOD11';
-
+    // Application messages
     const ACCOUNT_NUMBER_INVALID_MESSAGE = "The account number is invalid";
     const FAIL_MESSAGE = "The account number failed the modulus check";
     const PASS_MESSAGE = "Sort code and account number combination is valid";
     const SORT_CODE_INVALID_MESSAGE = "Sort code is invalid";
     const SORT_CODE_NOT_FOUND_MESSAGE = "Sort code not found";
 
+    /**
+     * A weighting data instance applicable to the sort code
+     * @var Weight
+     */
     protected $weight;
+
+    /**
+     * An array of all weights applicable to the sort code, which will be either one or two weights
+     * @var array
+     */
     protected $weights = [];
+
+    /**
+     * The original sort code received from the caller
+     * @var string
+     */
     protected $originalSortCode;
+
+    /**
+     * The sort code used in the analysis, which can be a substitute or an adjusted version of the
+     * sort code parameter
+     * @var string
+     */
     protected $sortCode;
+    
     protected $originalAccountNumber;
     protected $accountNumber;
     protected $testWasRun;
