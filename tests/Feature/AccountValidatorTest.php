@@ -378,6 +378,30 @@ class AccountValidatorTest extends TestCase
     }
 
     /**
+     * Coutts example 1. Exception 14 with noremainder, therefore, passed check 1 and the account number should be
+     * considered valid
+     * @return void
+     */
+    public function testExampleCoutts1()
+    {
+        // A valid sort code / account number combination
+        $response = $this->get('/api/is-valid/180002/98093517');
+        $this->checkResult($response, 200, true, true, 1, AccountValidatorManager::PASS_MESSAGE);
+    }
+
+    /**
+     * Coutts example 2. Exception 14 failed check 1 as there is a remainder perform check 2, which passes
+     * @return void
+     */
+    public function testExampleCoutts2()
+    {
+        // A valid sort code / account number combination
+        $response = $this->get('/api/is-valid/180002/00000190');
+        // Although there is only one weight record we will call it twice
+        $this->checkResult($response, 200, true, true, 2, AccountValidatorManager::PASS_MESSAGE);
+    }
+
+    /**
      * Check the result of a test
      *
      * @param TestResponse $response

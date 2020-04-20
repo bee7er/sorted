@@ -79,6 +79,11 @@ class AccountValidatorManager
 
                 $result = $validator->isValid();
 
+                if (!$result['valid'] && $validator->repeatTest()) {
+                    // Just run the same test again, nb we will have adjusted the parameters for the second check
+                    $result = $validator->isValid();
+                }
+
                 if ($result['valid'] && !$validator->passAllTests()) {
                     // This test has passed and we don't need to perform the second test, if there
                     // is one, so exit with passed result

@@ -54,10 +54,10 @@ class AccountValidator extends Model
     public $accountNumber;
 
     /**
-     * Flag which indicates whether or not the test of a particular weight record was run
+     * Count of tests run for a particular weight record, will normally be 1
      * @var bool
      */
-    public $testWasRun;
+    public $testsRun;
 
     /**
      * AccountValidator constructor
@@ -103,7 +103,7 @@ class AccountValidator extends Model
         }
 
         $result = $this->processWeight();
-        $numberOfTests = count(array_filter($this->weights, function ($weight) { return $weight->testWasRun; }));
+        $numberOfTests = array_sum(array_map(function ($weight) { return $weight->testsRun; }, $this->weights));
 
         if (!$result) {
             return [
@@ -144,7 +144,7 @@ class AccountValidator extends Model
             return $this->weight->passesTest;
         }
 
-        $this->weight->testWasRun = true;
+        $this->weight->testsRun += 1;
 
         $this->checkForOverrideWeights();
 
@@ -175,6 +175,16 @@ class AccountValidator extends Model
     public function runTest()
     {
         return true;
+    }
+
+    /**
+     * We may repeat a test under certain circumstances, but normally we do not
+     *
+     * @return bool
+     */
+    public function repeatTest()
+    {
+        return false;
     }
 
 

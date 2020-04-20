@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\AccountValidators\AccountValidatorException11;
-use App\AccountValidators\AccountValidatorException13;
 use RuntimeException;
 
 use App\AccountValidators\AccountValidator;
@@ -18,6 +16,9 @@ use App\AccountValidators\AccountValidatorException8;
 use App\AccountValidators\AccountValidatorException9;
 use App\AccountValidators\AccountValidatorException10;
 use App\AccountValidators\AccountValidatorException12;
+use App\AccountValidators\AccountValidatorException11;
+use App\AccountValidators\AccountValidatorException13;
+use App\AccountValidators\AccountValidatorException14;
 
 /**
  * Class AccountValidatorFactory
@@ -85,7 +86,7 @@ class AccountValidatorFactory
                 return new AccountValidatorException13($weight, $weights, $sortCode, $accountNumber);
 
             case (14):
-                // Use the base class
+                return new AccountValidatorException14($weight, $weights, $sortCode, $accountNumber);
 
             default:
                 // Not an exceptional sort code; just use the base class
