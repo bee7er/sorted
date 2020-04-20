@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\AccountValidators\AccountValidator;
+use App\Weight;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
@@ -147,6 +148,55 @@ class ParameterValidationTest extends TestCase
         $this->assertEquals('089999', $content['calculation-sortcode']);
         $this->assertEquals('6638974970', $content['original-account-number']);
         $this->assertEquals('38974970', $content['calculation-account-number']);
+    }
+
+    /**
+     * Validate account number where it is a non-standard account number of 10
+     * @return void
+     */
+    public function testAccountNumber9()
+    {
+        $sortCode = '089999';
+        // Ten digits
+        $accountNumber = '6638974970';
+        $accountValidator = new AccountValidator(new Weight(), [], $sortCode, $accountNumber);
+dd($accountValidator);
+        $result = $accountValidator->checkAccountNumber();
+        $this->assertTrue($result);
+        $this->assertEquals('38974970', $accountValidator->accountNumber);
+        $result = $accountValidator->checkAccountNumber(false);
+        $this->assertTrue($result);
+        $this->assertEquals('66389749', $accountValidator->accountNumber);
+    }
+
+    /**
+     * Validate account number where it is a non-standard account number of 6
+     * @return void
+     */
+    public function testAccountNumber10()
+    {
+        $sortCode = '089999';
+        // 6 digits
+        $accountNumber = '663897';
+
+        $result = AccountValidator::checkAccountNumber($sortCode, $accountNumber);
+        $this->assertIsArray($result);
+        $this->assertEquals('00663897', $result['accountNumber']);
+    }
+
+    /**
+     * Validate account number where it is a non-standard account number of 7
+     * @return void
+     */
+    public function testAccountNumber11()
+    {
+        $sortCode = '089999';
+        // 7 digits
+        $accountNumber = '6638974';
+
+        $result = AccountValidator::checkAccountNumber($sortCode, $accountNumber);
+        $this->assertIsArray($result);
+        $this->assertEquals('06638974', $result['accountNumber']);
     }
 
     /**

@@ -48,19 +48,33 @@ class AccountValidator extends Model
      * @var string
      */
     protected $sortCode;
-    
+
+    /**
+     * The original account number received from the caller
+     * @var string
+     */
     protected $originalAccountNumber;
+
+    /**
+     * The account number used in the analysis, which can be an adjusted version of the one
+     * received from the caller
+     * @var string
+     */
     protected $accountNumber;
+
+    /**
+     * Flag which indicates whether or not the test of a particular weight record was run
+     * @var bool
+     */
     protected $testWasRun;
-    protected $testCounter;
 
     /**
      * AccountValidator constructor
      *
      * @param Weight $weight
      * @param array $weights
-     * @param $sortCode
-     * @param $accountNumber
+     * @param string $sortCode
+     * @param string $accountNumber
      */
     public function __construct(
         Weight $weight, array $weights, $sortCode, $accountNumber
@@ -83,8 +97,8 @@ class AccountValidator extends Model
     public function isValid()
     {
         // If the account number is non-standard there are things we can do
-        $checkDetails = $this->checkAccountNumber($this->sortCode, $this->accountNumber);
-        if (false === $checkDetails) {
+        $checkDetails = self::checkAccountNumber();
+        if (!$checkDetails) {
             return [
                 'valid' => false,
                 'message' => AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE,
@@ -96,12 +110,6 @@ class AccountValidator extends Model
                 'numberOfTests' => 0,
                 'class' => $this->getClassName()
             ];
-        }
-
-        if (is_array($checkDetails)) {
-            // We have adjusted one or both parameters
-            $this->sortCode = $checkDetails['sortCode'];
-            $this->accountNumber = $checkDetails['accountNumber'];
         }
 
         $result = $this->processWeight();
@@ -146,7 +154,7 @@ class AccountValidator extends Model
     }
 
     /**
-     * Process the weight record(s) for a given sort code
+     * Process one of the the weight records for a given sort code; there may only be one
      *
      * @return bool
      */
@@ -314,30 +322,25 @@ class AccountValidator extends Model
     /**
      * Check the account number and possibly adjust it
      *
-     * @param  string  $sortCode
-     * @param  string  $accountNumber
-     * @return bool|array
+     * @param bool $isNatWest
+     * @return bool
      */
-    public function checkAccountNumber($sortCode, $accountNumber)
+    public function checkAccountNumber($isNatWest = true)
     {
         // If alphanumeric, less than 6 or greater than 10 digits there is nothing we can do
-        $len = strlen($accountNumber);
+        $len = strlen($this->accountNumber);
 
         switch (1) {
-            case !is_numeric($accountNumber):
+            case !is_numeric($this->accountNumber):
                 return false;
 
             case 6 === $len:
-                return [
-                    'sortCode' => $sortCode,
-                    'accountNumber' => ('00' . $accountNumber)
-                ];
+                $this->accountNumber = ('00' . $this->accountNumber);
+                return true;
 
             case 7 === $len:
-                return [
-                    'sortCode' => $sortCode,
-                    'accountNumber' => ('0' . $accountNumber)
-                ];
+                $this->accountNumber = ('0' . $this->accountNumber);
+                return true;
 
             case 8 === $len:
                 return true;
@@ -345,22 +348,19 @@ class AccountValidator extends Model
             case 9 === $len:
                 // Replace the last digit of the sort code with the first digit of
                 // the account number and use only the last 8 digits of the account number
-                $sortCode = substr($sortCode, 0, 5) . substr($accountNumber, 0, 1);
-                $accountNumber = substr($accountNumber, 1, 8);
-                return [
-                    'sortCode' => $sortCode,
-                    'accountNumber' => $accountNumber
-                ];
+                $this->sortCode = substr($this->sortCode, 0, 5) . substr($this->accountNumber, 0, 1);
+                $this->accountNumber = substr($this->accountNumber, 1, 8);
+                return true;
 
             case 10 === $len:
-                // Coop Bank or Leeds Bldg Society, use the first 8 digits
-//                $accountNumber = substr($accountNumber, 0, 8);
-                // Nat West Bank, use the last 8 digits
-                $accountNumber = substr($accountNumber, 2, 8);
-                return [
-                    'sortCode' => $sortCode,
-                    'accountNumber' => $accountNumber
-                ];
+                if ($isNatWest) {
+                    // Nat West Bank, use the last 8 digits
+                    $this->accountNumber = substr($this->accountNumber, 2, 8);
+                } else {
+                    // Coop Bank or Leeds Bldg Society, use the first 8 digits
+                    $this->accountNumber = substr($this->accountNumber, 0, 8);
+                }
+                return true;
         }
 
         return false;
