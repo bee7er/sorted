@@ -2,6 +2,10 @@
 
 namespace App\AccountValidators;
 
+/**
+ * Class AccountValidatorException6
+ * @package App\AccountValidators
+ */
 class AccountValidatorException6 extends AccountValidator
 {
     /**

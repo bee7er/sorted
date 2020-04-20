@@ -2,6 +2,10 @@
 
 namespace App\AccountValidators;
 
+/**
+ * Class AccountValidatorException9
+ * @package App\AccountValidators
+ */
 class AccountValidatorException9 extends AccountValidatorException2
 {
     // Lloyds euro accounts sort code

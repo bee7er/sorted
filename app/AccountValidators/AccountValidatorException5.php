@@ -4,6 +4,10 @@ namespace App\AccountValidators;
 
 use App\Substitute;
 
+/**
+ * Class AccountValidatorException5
+ * @package App\AccountValidators
+ */
 class AccountValidatorException5 extends AccountValidator
 {
     /**

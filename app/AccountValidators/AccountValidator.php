@@ -5,25 +5,16 @@ namespace App\AccountValidators;
 use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
 
+use App\AccountValidatorManager;
 use App\Weight;
 
 /**
  * Class AccountValidator
+ * Base class for the validation of sort code and account number combinations and exceptions
  * @package App\AccountValidators
  */
 class AccountValidator extends Model
 {
-    // Modulus checks
-    const MOD_CHECK_DBLAL = 'DBLAL';
-    const MOD_CHECK_MOD10 = 'MOD10';
-    const MOD_CHECK_MOD11 = 'MOD11';
-    // Application messages
-    const ACCOUNT_NUMBER_INVALID_MESSAGE = "The account number is invalid";
-    const FAIL_MESSAGE = "The account number failed the modulus check";
-    const PASS_MESSAGE = "Sort code and account number combination is valid";
-    const SORT_CODE_INVALID_MESSAGE = "Sort code is invalid";
-    const SORT_CODE_NOT_FOUND_MESSAGE = "Sort code not found";
-
     /**
      * A weighting data instance applicable to the sort code
      * @var Weight
@@ -101,7 +92,7 @@ class AccountValidator extends Model
         if (!$checkDetails) {
             return [
                 'valid' => false,
-                'message' => AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE,
+                'message' => AccountValidatorManager::ACCOUNT_NUMBER_INVALID_MESSAGE,
                 'original-sortcode' => $this->sortCode,
                 'calculation-sortcode' => $this->originalSortCode,
                 'original-account-number' => $this->accountNumber,
@@ -117,7 +108,7 @@ class AccountValidator extends Model
         if (!$result) {
             return [
                 'valid' => $result,
-                'message' => self::FAIL_MESSAGE,
+                'message' => AccountValidatorManager::FAIL_MESSAGE,
                 'original-sortcode' => $this->originalSortCode,
                 'calculation-sortcode' => $this->sortCode,
                 'original-account-number' => $this->originalAccountNumber,
@@ -130,7 +121,7 @@ class AccountValidator extends Model
         // Success
         return [
             'valid' => $result,
-            'message' => self::PASS_MESSAGE,
+            'message' => AccountValidatorManager::PASS_MESSAGE,
             'original-sortcode' => $this->originalSortCode,
             'calculation-sortcode' => $this->sortCode,
             'original-account-number' => $this->originalAccountNumber,
@@ -160,13 +151,13 @@ class AccountValidator extends Model
         $this->checkForOverrideSortCode();
 
         switch ($this->weight->mod_check) {
-            case self::MOD_CHECK_DBLAL:
+            case AccountValidatorManager::MOD_CHECK_DBLAL:
                 $this->weight->passesTest = $this->doDblAlModulusCheck();
                 break;
-            case self::MOD_CHECK_MOD10:
+            case AccountValidatorManager::MOD_CHECK_MOD10:
                 $this->weight->passesTest = $this->doModulusCheck(10);
                 break;
-            case self::MOD_CHECK_MOD11:
+            case AccountValidatorManager::MOD_CHECK_MOD11:
                 $this->weight->passesTest = $this->doModulusCheck(11);
                 break;
             default:

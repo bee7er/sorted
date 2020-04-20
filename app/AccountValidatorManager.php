@@ -2,11 +2,21 @@
 
 namespace App;
 
-use App\AccountValidators\AccountValidator;
 use Exception;
 
 class AccountValidatorManager
 {
+    // Modulus checks
+    const MOD_CHECK_DBLAL = 'DBLAL';
+    const MOD_CHECK_MOD10 = 'MOD10';
+    const MOD_CHECK_MOD11 = 'MOD11';
+    // Application messages
+    const ACCOUNT_NUMBER_INVALID_MESSAGE = "The account number is invalid";
+    const FAIL_MESSAGE = "The account number failed the modulus check";
+    const PASS_MESSAGE = "Sort code and account number combination is valid";
+    const SORT_CODE_INVALID_MESSAGE = "Sort code is invalid";
+    const SORT_CODE_NOT_FOUND_MESSAGE = "Sort code not found";
+
     /**
      * Validate the specified sort code and account number
      *
@@ -24,7 +34,7 @@ class AccountValidatorManager
             if (!$this->isValidSortCode($sortCode)) {
                 return [
                     'valid' => false,
-                    'message' => AccountValidator::SORT_CODE_INVALID_MESSAGE,
+                    'message' => self::SORT_CODE_INVALID_MESSAGE,
                     'original-sortcode' => $sortCode,
                     'calculation-sortcode' => $sortCode,
                     'original-account-number' => $accountNumber,
@@ -45,7 +55,7 @@ class AccountValidatorManager
             if (null === $weights || 0 >= count($weights)) {
                 return [
                     'valid' => true,
-                    'message' => AccountValidator::SORT_CODE_NOT_FOUND_MESSAGE,
+                    'message' => self::SORT_CODE_NOT_FOUND_MESSAGE,
                     'original-sortcode' => $sortCode,
                     'calculation-sortcode' => $sortCode,
                     'original-account-number' => $accountNumber,

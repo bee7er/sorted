@@ -4,6 +4,10 @@ namespace App\AccountValidators;
 
 use App\Weight;
 
+/**
+ * Class AccountValidatorException2
+ * @package App\AccountValidators
+ */
 class AccountValidatorException2 extends AccountValidator
 {
     // 0 0 1 2 5 3 6 4 8 7 10 9 3 1

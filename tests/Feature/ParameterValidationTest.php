@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\AccountValidators\AccountValidator;
-use App\Weight;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
+
+use App\AccountValidatorManager;
+use App\AccountValidators\AccountValidator;
+use App\Weight;
 
 class ParameterValidationTest extends TestCase
 {
@@ -16,7 +18,7 @@ class ParameterValidationTest extends TestCase
     public function testInvalidSortCode1()
     {
         $response = $this->get('/api/is-valid/07011/12224141');
-        $this->checkResult($response, 200, AccountValidator::SORT_CODE_INVALID_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::SORT_CODE_INVALID_MESSAGE);
     }
 
     /**
@@ -26,7 +28,7 @@ class ParameterValidationTest extends TestCase
     public function testInvalidSortCode2()
     {
         $response = $this->get('/api/is-valid/0701x1/12224141');
-        $this->checkResult($response, 200, AccountValidator::SORT_CODE_INVALID_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::SORT_CODE_INVALID_MESSAGE);
     }
 
     /**
@@ -36,7 +38,7 @@ class ParameterValidationTest extends TestCase
     public function testInvalidSortCode3()
     {
         $response = $this->get('/api/is-valid/0701122/14134141');
-        $this->checkResult($response, 200, AccountValidator::SORT_CODE_INVALID_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::SORT_CODE_INVALID_MESSAGE);
     }
     /**
      * Validate sort code is found in the EISCD table
@@ -45,7 +47,7 @@ class ParameterValidationTest extends TestCase
     public function testInvalidSortCode4()
     {
         $response = $this->get('/api/is-valid/000999/12222141');
-        $this->checkResult($response, 200, AccountValidator::SORT_CODE_NOT_FOUND_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::SORT_CODE_NOT_FOUND_MESSAGE);
     }
 
     /**
@@ -55,7 +57,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber1()
     {
         $response = $this->get('/api/is-valid/070116/11283');
-        $this->checkResult($response, 200, AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::ACCOUNT_NUMBER_INVALID_MESSAGE);
     }
 
     /**
@@ -65,7 +67,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber2()
     {
         $response = $this->get('/api/is-valid/070116/12345687671');
-        $this->checkResult($response, 200, AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::ACCOUNT_NUMBER_INVALID_MESSAGE);
     }
 
     /**
@@ -75,7 +77,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber3()
     {
         $response = $this->get('/api/is-valid/070116/1112355x');
-        $this->checkResult($response, 200, AccountValidator::ACCOUNT_NUMBER_INVALID_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::ACCOUNT_NUMBER_INVALID_MESSAGE);
     }
 
     /**
@@ -85,7 +87,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber4()
     {
         $response = $this->get('/api/is-valid/089999/66374958');
-        $this->checkResult($response, 200, AccountValidator::PASS_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::PASS_MESSAGE);
     }
 
     /**
@@ -95,7 +97,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber5()
     {
         $response = $this->get('/api/is-valid/089999/663749');
-        $this->checkResult($response, 200, AccountValidator::FAIL_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::FAIL_MESSAGE);
 
         $content = json_decode($response->content(), true);
 
@@ -109,7 +111,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber6()
     {
         $response = $this->get('/api/is-valid/089999/6637497');
-        $this->checkResult($response, 200, AccountValidator::FAIL_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::FAIL_MESSAGE);
 
         $content = json_decode($response->content(), true);
 
@@ -123,7 +125,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber7()
     {
         $response = $this->get('/api/is-valid/089999/663897497');
-        $this->checkResult($response, 200, AccountValidator::FAIL_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::FAIL_MESSAGE);
 
         $content = json_decode($response->content(), true);
 
@@ -140,7 +142,7 @@ class ParameterValidationTest extends TestCase
     public function testAccountNumber8()
     {
         $response = $this->get('/api/is-valid/089999/6638974970');
-        $this->checkResult($response, 200, AccountValidator::FAIL_MESSAGE);
+        $this->checkResult($response, 200, AccountValidatorManager::FAIL_MESSAGE);
 
         $content = json_decode($response->content(), true);
 

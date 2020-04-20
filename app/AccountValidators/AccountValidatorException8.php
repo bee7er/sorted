@@ -2,8 +2,10 @@
 
 namespace App\AccountValidators;
 
-use App\Substitute;
-
+/**
+ * Class AccountValidatorException8
+ * @package App\AccountValidators
+ */
 class AccountValidatorException8 extends AccountValidator
 {
     static $overrideSortCode = '090126';

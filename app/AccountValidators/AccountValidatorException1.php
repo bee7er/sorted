@@ -2,6 +2,10 @@
 
 namespace App\AccountValidators;
 
+/**
+ * Class AccountValidatorException1
+ * @package App\AccountValidators
+ */
 class AccountValidatorException1 extends AccountValidator
 {
     // The adjustment performed prior to doing the modulus check
