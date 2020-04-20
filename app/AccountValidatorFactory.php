@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\AccountValidators\AccountValidatorException11;
+use App\AccountValidators\AccountValidatorException13;
 use RuntimeException;
 
 use App\AccountValidators\AccountValidator;
@@ -73,11 +75,15 @@ class AccountValidatorFactory
             case (10):
                 return new AccountValidatorException10($weight, $weights, $sortCode, $accountNumber);
 
+            case (11):
+                return new AccountValidatorException11($weight, $weights, $sortCode, $accountNumber);
+
             case (12):
                 return new AccountValidatorException12($weight, $weights, $sortCode, $accountNumber);
 
-            case (11):
             case (13):
+                return new AccountValidatorException13($weight, $weights, $sortCode, $accountNumber);
+
             case (14):
                 // Use the base class
 
