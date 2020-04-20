@@ -159,11 +159,13 @@ class ParameterValidationTest extends TestCase
         $sortCode = '089999';
         // Ten digits
         $accountNumber = '6638974970';
+
         $accountValidator = new AccountValidator(new Weight(), [], $sortCode, $accountNumber);
-dd($accountValidator);
         $result = $accountValidator->checkAccountNumber();
         $this->assertTrue($result);
         $this->assertEquals('38974970', $accountValidator->accountNumber);
+
+        $accountValidator = new AccountValidator(new Weight(), [], $sortCode, $accountNumber);
         $result = $accountValidator->checkAccountNumber(false);
         $this->assertTrue($result);
         $this->assertEquals('66389749', $accountValidator->accountNumber);
@@ -179,9 +181,10 @@ dd($accountValidator);
         // 6 digits
         $accountNumber = '663897';
 
-        $result = AccountValidator::checkAccountNumber($sortCode, $accountNumber);
-        $this->assertIsArray($result);
-        $this->assertEquals('00663897', $result['accountNumber']);
+        $accountValidator = new AccountValidator(new Weight(), [], $sortCode, $accountNumber);
+        $result = $accountValidator->checkAccountNumber();
+        $this->assertTrue($result);
+        $this->assertEquals('00663897', $accountValidator->accountNumber);
     }
 
     /**
@@ -194,9 +197,27 @@ dd($accountValidator);
         // 7 digits
         $accountNumber = '6638974';
 
-        $result = AccountValidator::checkAccountNumber($sortCode, $accountNumber);
-        $this->assertIsArray($result);
-        $this->assertEquals('06638974', $result['accountNumber']);
+        $accountValidator = new AccountValidator(new Weight(), [], $sortCode, $accountNumber);
+        $result = $accountValidator->checkAccountNumber();
+        $this->assertTrue($result);
+        $this->assertEquals('06638974', $accountValidator->accountNumber);
+    }
+
+    /**
+     * Validate account number where it is a non-standard account number of 9
+     * @return void
+     */
+    public function testAccountNumber12()
+    {
+        $sortCode = '089999';
+        // 9 digits
+        $accountNumber = '663897445';
+
+        $accountValidator = new AccountValidator(new Weight(), [], $sortCode, $accountNumber);
+        $result = $accountValidator->checkAccountNumber();
+        $this->assertTrue($result);
+        $this->assertEquals('089996', $accountValidator->sortCode);
+        $this->assertEquals('63897445', $accountValidator->accountNumber);
     }
 
     /**

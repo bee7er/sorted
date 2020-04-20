@@ -28,45 +28,45 @@ class AccountValidator extends Model
      * A weighting data instance applicable to the sort code
      * @var Weight
      */
-    protected $weight;
+    public $weight;
 
     /**
      * An array of all weights applicable to the sort code, which will be either one or two weights
      * @var array
      */
-    protected $weights = [];
+    public $weights = [];
 
     /**
      * The original sort code received from the caller
      * @var string
      */
-    protected $originalSortCode;
+    public $originalSortCode;
 
     /**
      * The sort code used in the analysis, which can be a substitute or an adjusted version of the
      * sort code parameter
      * @var string
      */
-    protected $sortCode;
+    public $sortCode;
 
     /**
      * The original account number received from the caller
      * @var string
      */
-    protected $originalAccountNumber;
+    public $originalAccountNumber;
 
     /**
      * The account number used in the analysis, which can be an adjusted version of the one
      * received from the caller
      * @var string
      */
-    protected $accountNumber;
+    public $accountNumber;
 
     /**
      * Flag which indicates whether or not the test of a particular weight record was run
      * @var bool
      */
-    protected $testWasRun;
+    public $testWasRun;
 
     /**
      * AccountValidator constructor
