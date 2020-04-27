@@ -1,47 +1,63 @@
-@extends('layout')
+
+@extends('template')
 
 @section('content')
 
-    <div class="flex-center position-ref full-height">
+    <div id="wrapper">
+        <div id="page" class="container">
+            <form method="post" action="/">
 
-        @if (Route::has('login'))
-            <div class="top-right links">
-                @auth
-                <a href="{{ url('/home') }}">Home</a>
-                @else
-                    <a href="{{ route('login') }}">Login</a>
+                @csrf <!-- {{ csrf_field() }} -->
 
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}">Register</a>
-                    @endif
-                    @endauth
-            </div>
-        @endif
+                <div>
+                    <div class="title">Validating your bank sort code / account number combination</div>
+                    <p>Enter the details of the sort code and account number and then press submit</p>
+                    <div style="margin-top: 15px;">
+                        <div class="field">
+                            <div class="control">
+                                <div class="columns">
+                                    <div class="column is-one-fifth">
+                                        Sort code:
+                                    </div>
+                                    <div class="column is-one-fifth">
+                                        <input name="sortCode" id="sortCode" class="input is-primary is-small"
+                                               type="text" placeholder="000000" value="{{ $sortCode }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <div class="columns">
+                                    <div class="column is-one-fifth">
+                                        Account number:
+                                    </div>
+                                    <div class="column is-one-fifth">
+                                        <input name="accountNumber" id="accountNumber" class="input is-primary
+                                        is-small" type="text" placeholder="00000000" value="{{ $accountNumber }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        <div class="content">
-            <div class="title m-b-md">
-                Welcome
-            </div>
+                        @if (session('success'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if (session('fail'))
+                            <div class="alert alert-danger">
+                                {{ session('fail') }}
+                            </div>
+                        @endif
 
-            <div class="links">
-                <a href="/substitutes/refresh">Refresh Substitutes</a>
-                <a href="/weights/refresh">Refresh Weights</a>
-            </div>
-
-            <hr />
-
-            <div class="links">
-                <a href="/templated/">Template Layout</a>
-                <a href="/contact/">Contact</a>
-                <a href="https://laravel.com/docs">Docs</a>
-                <a href="https://laracasts.com">Laracasts</a>
-                <a href="https://laravel-news.com">News</a>
-                <a href="https://blog.laravel.com">Blog</a>
-                <a href="https://nova.laravel.com">Nova</a>
-                <a href="https://forge.laravel.com">Forge</a>
-                <a href="https://vapor.laravel.com">Vapor</a>
-                <a href="https://github.com/laravel/laravel">GitHub</a>
-            </div>
+                        <div class="buttons">
+                            <button class="button is-warning" onclick="this.form.reset(); return false;">Reset</button>
+                            <button type="submit" class="button is-info">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
