@@ -5,7 +5,7 @@
 
     <div id="wrapper">
         <div id="page" class="container">
-            <form method="post" action="/">
+            <form name="bank" method="post" action="/">
 
                 @csrf <!-- {{ csrf_field() }} -->
 

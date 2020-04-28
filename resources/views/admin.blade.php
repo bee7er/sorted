@@ -20,8 +20,12 @@
                     @endif
 
                     <div class="links">
-                        <div><a href="/substitutes/refresh">Refresh Sort Code Substitutes data</a></div>
-                        <div><a href="/weights/refresh">Refresh Sort Code Weightings data</a></div>
+                        <div><a href="/substitutes/refresh" onclick="if (confirm('Are you sure you want to refresh ' +
+                         'substitute sort code data?')) { return true; return false; }">Refresh Sort Code Substitutes
+                                data</a></div>
+                        <div><a href="/weights/refresh" onclick="if (confirm('Are you sure you want to refresh ' +
+                         'sort code weightings data?')) { return true; return false; }">Refresh Sort Code Weightings
+                                data</a></div>
                         <hr />
                         <div><a href="/">Go to the front end</a></div>
                     </div>

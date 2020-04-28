@@ -25,7 +25,13 @@ Route::get('/about/', function() {
 
 Route::get('/api/is-valid/{sortCode}/{accountNumber}', 'API\AccountValidatorController@isValid');
 
-Auth::routes();
+# Add all the login and registration routes, although here I am avoiding the
+# registration of new users and the reset of a new password
+Auth::routes([
+    'register' => false, // Registration Routes...
+    'reset' => false, // Password Reset Routes...
+    'verify' => false, // Email Verification Routes...
+]);
 
 # Admin dashboard
 Route::get('/admin', 'Admin\AdminController@index')->name('admin');
