@@ -16,7 +16,7 @@ use App\Weight;
 class AccountValidator extends Model
 {
     /**
-     * A weighting data instance applicable to the sort code
+     * A weights data instance applicable to the sort code
      * @var Weight
      */
     public $weight;

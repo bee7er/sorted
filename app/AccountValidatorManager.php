@@ -48,7 +48,7 @@ class AccountValidatorManager
                 ];
             }
 
-            // Get the EISCD (Extended Industry Sorting Code Directory) weightings record
+            // Get the EISCD (Extended Industry Sorting Code Directory) weights record
             $weights = Weight::query()
                 ->whereNull('inactivated_at')
                 ->where('start', '<=', $sortCode)

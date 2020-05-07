@@ -60,6 +60,7 @@ class HomeController extends Controller
      */
 	public function validateForm(Request $request)
 	{
+		dd('ppp');
         try {
             $loggedIn = false;
             if ($this->auth->check()) {

@@ -35,6 +35,7 @@ Auth::routes([
 
 # Admin dashboard
 Route::get('/admin', 'Admin\AdminController@index')->name('admin');
+Route::post('/admin', 'Admin\AdminController@action')->name('admin');
 # Sort Code data
 Route::get('/substitutes/refresh', 'Admin\SubstitutesController@refreshData');
 Route::get('/weights/refresh', 'Admin\WeightsController@refreshData');

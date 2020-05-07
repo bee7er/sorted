@@ -10882,3 +10882,7 @@ a.text-dark:focus {
   }
 }
 
+.navbar-brand {
+  font-weight: bold;
+}
+

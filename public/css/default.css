@@ -368,7 +368,7 @@ ul.contact li a.icon-rss:before
 	
 #header-wrapper
 {
-	background: #d4d4d4 url('images/sortcode.png') no-repeat center;
+	background: teal url('images/sortcode.png') no-repeat center;
 	background-size: auto 100%;
 }
 

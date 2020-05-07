@@ -42,8 +42,8 @@ Released   : 20200501
 
     @yield('content')
 
-    <div id="copyright" class="container">
-        <p>&copy; GetSorted</p>
+    <div id="copyright" style="background-color: teal;">
+        <p>&copy; {{ (new DateTime())->format('Y') }} Brian Etheridge</p>
     </div>
 
     <script type="application/javascript" src="/js/app.js?t=1"></script>

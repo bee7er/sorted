@@ -40,7 +40,7 @@ class AccountValidatorFactory
     {
         $cnt = count($weights);
         if (2 < $cnt) {
-            throw new RuntimeException(sprintf("Unexpected number of sort code weighting records %d", $cnt));
+            throw new RuntimeException(sprintf("Unexpected number of sort code weights records %d", $cnt));
         }
 
         $exception = (int)$weight->exception;
