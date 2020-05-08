@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Substitute;
 use App\Weight;
 use Exception;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use RuntimeException;
 
@@ -47,7 +46,7 @@ class AdminController extends Controller
                 case isset($params['downloadWeights']):
                     if ($this->downloadWeights()) {
                         return Response::redirectTo("/admin")->withSuccess('Sort Code Weightings data successfully
-                        down loaded');
+                        downloaded');
                     }
 
                     session()->flash('fail', 'Unknown error downloading Sort Code Weightings data');
@@ -56,7 +55,7 @@ class AdminController extends Controller
                 case isset($params['downloadSubstitutes']):
                     if ($this->downloadSubstitutes()) {
                         return Response::redirectTo("/admin")->withSuccess('Sort Code Substututes data successfully
-                        down loaded');
+                        downloaded');
                     }
 
                     session()->flash('fail', 'Unknown error downloading Sort Code Substututes data');
@@ -96,9 +95,13 @@ class AdminController extends Controller
      *
      * @throws RuntimeException
      */
-    public function downloadWeights()
+    private function downloadWeights()
     {
-        throw new RuntimeException('downloadWeights');
+        $outfile = env('PROJECT_DIRECTORY') . DIRECTORY_SEPARATOR .
+            env('SORT_CODE_IMPORT_DIR') . DIRECTORY_SEPARATOR .
+            env('SORT_CODE_IMPORT_WEIGHTS');
+
+        return $this->downloadDataFile('Weights', 'weightsTableUrl', $outfile);
     }
 
     /**
@@ -106,9 +109,53 @@ class AdminController extends Controller
      *
      * @throws RuntimeException
      */
-    public function downloadSubstitutes()
+    private function downloadSubstitutes()
     {
-        throw new RuntimeException('downloadSubstitutes');
+        $outfile = env('PROJECT_DIRECTORY') . DIRECTORY_SEPARATOR .
+            env('SORT_CODE_IMPORT_DIR') . DIRECTORY_SEPARATOR .
+            env('SORT_CODE_IMPORT_SUBSTITUTES');
+
+        return $this->downloadDataFile('Substitutes', 'substitutesTableUrl', $outfile);
+    }
+
+    /**
+     * Downloads the data file
+     *
+     * @param string $dataType
+     * @param string $param
+     * @param string $outfile
+     * @return bool
+     */
+    private function downloadDataFile($dataType, $param, $outfile)
+    {
+        // Get the URL for the data
+        $params = request()->all();
+
+        if (empty($params[$param])) {
+            throw new RuntimeException("The url of the $dataType data file is required");
+        }
+
+        $data = file_get_contents($params[$param]);
+        if (false === $data) {
+            throw new RuntimeException("Error trying to download Sort Code $dataType data");
+        }
+
+        $dataArray = explode("\r\n", $data);
+        if (is_array($dataArray) && count($dataArray) > 0) {
+
+            if (file_exists($outfile)) {
+                // Rename the current file
+                rename($outfile, str_replace('.txt', '', $outfile) . date('Ymd_His') . '.txt');
+            }
+
+            if (false === file_put_contents($outfile, implode("\n", $dataArray), LOCK_EX)) {
+                throw new RuntimeException("Error writing output file of Sort Code $dataType");
+            }
+        } else {
+            throw new RuntimeException("No data obtained in download of Sort Code $dataType");
+        }
+
+        return true;
     }
 
     /**
