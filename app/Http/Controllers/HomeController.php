@@ -60,7 +60,6 @@ class HomeController extends Controller
      */
 	public function validateForm(Request $request)
 	{
-		dd('ppp');
         try {
             $loggedIn = false;
             if ($this->auth->check()) {
@@ -76,9 +75,9 @@ class HomeController extends Controller
             $accountValidatorManager = new AccountValidatorManager();
             $result = $accountValidatorManager->validateSortCodeAccountNumber($sortCode, $accountNumber);
             if ($result['valid']) {
-                session()->flash('success', $result['message']);
+				return Response::redirectTo("/")->withSuccess($result['message']);
             } else {
-                session()->flash('fail', $result['message']);
+				return Response::redirectTo("/")->withFail($result['message']);
             }
 
         } catch (RuntimeException $e) {
