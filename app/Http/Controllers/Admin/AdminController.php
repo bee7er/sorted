@@ -22,14 +22,16 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the application dashboard
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-        return view('admin', ['weightsTableUrl' => env('SORT_CODE_IMPORT_WEIGHTS_URL'), 'substitutesTableUrl' => env
-        ('SORT_CODE_IMPORT_SUBSTITUTES_URL')]);
+        return view('admin', [
+            'weightsTableUrl' => env('SORT_CODE_IMPORT_WEIGHTS_URL'),
+            'substitutesTableUrl' => env('SORT_CODE_IMPORT_SUBSTITUTES_URL')
+        ]);
     }
 
     /**
@@ -45,8 +47,8 @@ class AdminController extends Controller
             switch (true) {
                 case isset($params['downloadWeights']):
                     if ($this->downloadWeights()) {
-                        return Response::redirectTo("/admin")->withSuccess('Sort Code Weightings data successfully
-                        downloaded');
+                        return Response::redirectTo("/admin")
+                            ->withSuccess('Sort Code Weightings data successfully downloaded');
                     }
 
                     session()->flash('fail', 'Unknown error downloading Sort Code Weightings data');
@@ -54,8 +56,8 @@ class AdminController extends Controller
                     break;
                 case isset($params['downloadSubstitutes']):
                     if ($this->downloadSubstitutes()) {
-                        return Response::redirectTo("/admin")->withSuccess('Sort Code Substututes data successfully
-                        downloaded');
+                        return Response::redirectTo("/admin")
+                            ->withSuccess('Sort Code Substututes data successfully downloaded');
                     }
 
                     session()->flash('fail', 'Unknown error downloading Sort Code Substututes data');
@@ -63,8 +65,8 @@ class AdminController extends Controller
                     break;
                 case isset($params['refreshWeights']):
                     if ($this->refreshWeights()) {
-                        return Response::redirectTo("/admin")->withSuccess('Sort Code Weightings data successfully
-                        refreshed');
+                        return Response::redirectTo("/admin")
+                            ->withSuccess('Sort Code Weightings data successfully refreshed');
                     }
 
                     session()->flash('fail', 'Unknown error refreshing Sort Code Weightings data');
@@ -72,8 +74,8 @@ class AdminController extends Controller
                     break;
                 case isset($params['refreshSubstitutes']):
                     if ($this->refreshSubstitutes()) {
-                        return Response::redirectTo("/admin")->withSuccess('Sort Code Substitutes data successfully
-                        refreshed');
+                        return Response::redirectTo("/admin")
+                            ->withSuccess('Sort Code Substitutes data successfully refreshed');
                     }
 
                     session()->flash('fail', 'Unknown error refreshing Sort Code Substitute data');
@@ -86,8 +88,10 @@ class AdminController extends Controller
             );
         }
 
-        return view('admin', ['weightsTableUrl' => env('SORT_CODE_IMPORT_WEIGHTS_URL'), 'substitutesTableUrl' => env
-        ('SORT_CODE_IMPORT_SUBSTITUTES_URL')]);
+        return view('admin', [
+            'weightsTableUrl' => env('SORT_CODE_IMPORT_WEIGHTS_URL'),
+            'substitutesTableUrl' => env('SORT_CODE_IMPORT_SUBSTITUTES_URL')
+        ]);
     }
 
     /**
@@ -135,20 +139,23 @@ class AdminController extends Controller
             throw new RuntimeException("The url of the $dataType data file is required");
         }
 
+        // Download the new data
         $data = file_get_contents($params[$param]);
         if (false === $data) {
             throw new RuntimeException("Error trying to download Sort Code $dataType data");
         }
 
+        // Convert to an array and check we got something
         $dataArray = explode("\r\n", $data);
         if (is_array($dataArray) && count($dataArray) > 0) {
 
             if (file_exists($outfile)) {
-                // Rename the current file
+                // Rename the current file out of the way
                 rename($outfile, str_replace('.txt', '', $outfile) . date('Ymd_His') . '.txt');
             }
 
-            if (false === file_put_contents($outfile, implode("\n", $dataArray), LOCK_EX)) {
+            // Output the new file data to the file system
+            if (false === file_put_contents($outfile, implode(PHP_EOL, $dataArray), LOCK_EX)) {
                 throw new RuntimeException("Error writing output file of Sort Code $dataType");
             }
         } else {
@@ -165,8 +172,6 @@ class AdminController extends Controller
      */
     public function refreshWeights()
     {
-        //TODO check if the file data is already up to date
-
         (new Weight())->refresh();
 
         return true;
@@ -179,8 +184,6 @@ class AdminController extends Controller
      */
     public function refreshSubstitutes()
     {
-        //TODO check if the file data is already up to date
-
         (new Substitute())->refresh();
 
         return true;

@@ -20,6 +20,8 @@ class AccountValidatorManager
     const PASS_MESSAGE = "Sort code and account number combination is valid";
     const SORT_CODE_INVALID_MESSAGE = "Sort code is invalid";
     const SORT_CODE_NOT_FOUND_MESSAGE = "Sort code not found";
+    // Constants
+    const SORT_CODE_LENGTH = 6;
 
     /**
      * Validate the specified sort code and account number
@@ -125,7 +127,7 @@ class AccountValidatorManager
     private function isValidSortCode($sortCode)
     {
 
-        if (6 !== strlen($sortCode) || !is_numeric($sortCode)) {
+        if (self::SORT_CODE_LENGTH !== strlen($sortCode) || !is_numeric($sortCode)) {
             return false;
         }
 
