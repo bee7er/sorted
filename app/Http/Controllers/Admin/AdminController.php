@@ -7,6 +7,7 @@ use App\Substitute;
 use App\Weight;
 use Exception;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 use RuntimeException;
 
 class AdminController extends Controller
@@ -28,6 +29,9 @@ class AdminController extends Controller
      */
     public function index()
     {
+        // Clear all messages
+        Session::forget(['success', 'fail']);
+
         return view('admin', [
             'weightsTableUrl' => env('SORT_CODE_IMPORT_WEIGHTS_URL'),
             'substitutesTableUrl' => env('SORT_CODE_IMPORT_SUBSTITUTES_URL')

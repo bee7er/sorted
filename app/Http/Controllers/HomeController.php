@@ -75,9 +75,9 @@ class HomeController extends Controller
             $accountValidatorManager = new AccountValidatorManager();
             $result = $accountValidatorManager->validateSortCodeAccountNumber($sortCode, $accountNumber);
             if ($result['valid']) {
-				return Response::redirectTo("/")->withSuccess($result['message']);
+                session()->flash('success', $result['message']);
             } else {
-				return Response::redirectTo("/")->withFail($result['message']);
+                session()->flash('fail', $result['message']);
             }
 
         } catch (RuntimeException $e) {
