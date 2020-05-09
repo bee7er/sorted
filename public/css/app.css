@@ -10886,3 +10886,9 @@ a.text-dark:focus {
   font-weight: bold;
 }
 
+.card-header {
+  font-weight: bold;
+  color: white;
+  background-color: teal;
+}
+
