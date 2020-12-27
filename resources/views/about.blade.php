@@ -7,7 +7,7 @@
         <div id="page" class="container">
             <div>
                 <div class="title">About Get Sorted</div>
-                <p>This simple web site is a front end a testing tool for an API, which validates a bank sort code
+                <p>This simple web site is a front end testing tool for an API, which validates a bank sort code
                     and account number combination.</p>
                 <p>Validating a sort code and account number is not straightforward.  This is because the very many
                     banks in the UK have introduced their own subtle differences in the way they format their bank
