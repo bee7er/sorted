@@ -3,7 +3,7 @@ This version is Homestead / Vagrant
 
 To run locally:
 
-    http://modcheker.dev
+    http://sorted.test
 
 Use GIT
 
