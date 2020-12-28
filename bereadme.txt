@@ -7,6 +7,8 @@ To run locally:
 
 Use GIT
 
+    20201228 changed to use SSH authentication
+
 Mysql:
 
     use the vagrant ssh command line:
